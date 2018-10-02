@@ -4,6 +4,6 @@ echo "# usage: bash bulk-header.sh target.txt";
 file=$1
 while IFS= read bulk
 do
-  curl -o /dev/null --max-time 20 --silent --head --write-out "%{http_code} - $bulk\n" "$bulk"
+  curl -o /dev/null --max-time 10 --silent --head --write-out "%{http_code} - $bulk\n" "$bulk"
 done < "$file"
 exit 0
