@@ -1,9 +1,6 @@
 #!/bin/bash
-echo "# Simple Massive HTTP Header Status Checker";
-echo "# usage: bash bulk-header.sh target.txt";
-file=$1
-while IFS= read bulk
+echo "Usage: bash bulk-response.sh list.txt"
+for hostlists in $(cat $1);
 do
-  curl -o /dev/null --max-time 10 --silent --head --write-out "%{http_code} - $bulk\n" "$bulk"
-done < "$file"
-exit 0
+	curl -s -o /dev/null -I -w "[%{http_code}] $hostlists\n" "$hostlists"
+done
