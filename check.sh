@@ -4,8 +4,21 @@ if [ -z "$1" ]; then
     exit
 fi
 
-echo -e "Nakano Nino best waifu!\n";  
+#Banner
+echo -e "
+Bulk status code scanner                  
+Codename : EVA02 - Asuka Soryu\n"  
+
+process=10
+statuscheck(){
+    curl --write-out "%{http_code} - $hostlists\n" --silent --output /dev/null $hostlists
+}
 for hostlists in $(cat $1);
 do
-    echo $hostlists | xargs -P 100 curl -s -o /dev/null -I -w "[%{http_code}] - $hostlists\n"
+    statuscheck &
+    background=( $(jobs -p) )
+    if (( ${#background[@]} == process )); then
+        wait -n
+    fi
 done
+wait
