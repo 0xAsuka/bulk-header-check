@@ -11,16 +11,16 @@ green="\033[0;32m"  # Successful
 reset="\033[0m"     # Normal
 
 # Variable
-process=10
+# process=10
 useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
 statuscode(){
-    curl -H "User-Agent: $useragent" --connect-timeout 3 --write-out "%{http_code}" --silent --output /dev/null $hostlists
+    curl -L -H "User-Agent: $useragent" --connect-timeout 3 --write-out "%{http_code}" --silent --fail-with-body --output /dev/null $hostlists
 }
 statusresult(){
     if [[ $(statuscode) == '200' ]]; then
 	 	echo -e "${green}[$(statuscode)]${reset} - $hostlists"
     elif
-        [[ $(statuscode) == '403' ]]; then
+        [[ $(statuscode) == '000' ]]; then
 	 	echo -e "${red}[$(statuscode)]${reset} - $hostlists"
   	else
  		echo "[$(statuscode)] - $hostlists"
